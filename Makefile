@@ -1,5 +1,5 @@
 make:
-	javac Triangle.java
+	javac *.java
 
 clean:
 	rm *.class

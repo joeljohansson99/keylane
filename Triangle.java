@@ -1,5 +1,3 @@
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -17,19 +15,8 @@ public class Triangle {
             System.out.println("usage: <side 1> <side 2> <side 3>");
             return;
         }
-
-        List<Double> sides = new ArrayList<>();
         
-        for (String s : args) {
-            try {
-                sides.add(Double.parseDouble(s));
-            } catch (Exception e) {
-                System.out.println("Could not parse side " + s);
-                return;
-            }
-        }
-        
-        switch (triangle(sides)) {
+        switch (triangle(args)) {
             case EQUILATERAL:
                 System.out.println("Triangle is equilateral!");
                 break;
@@ -45,10 +32,20 @@ public class Triangle {
         }
     }
 
-    public static Type triangle(List<Double> sides) {
+    public static Type triangle(String[] sides) {
 
-        Set<Double> unique = new HashSet<>(sides);
-
+        Set<BigDec> unique = new HashSet<>();
+        // Parse the sides, and check for parsing errors.
+        for (String side : sides) {
+            try {
+                unique.add(BigDec.parse(side));
+            } catch (NumberFormatException e) {
+                System.out.println("Side " + side + " is not a number!");
+                return Type.UNDEFINED;
+            }
+        }
+        
+        // The length of the set will be unique sides
         switch (unique.size()) {
             case 1:
                 return Type.EQUILATERAL;
